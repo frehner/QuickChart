@@ -8,7 +8,18 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	</head>
 	<body>
-		<input type="textbox" ng-model="ham">
-		{{ham}}
+		<div ng-controller="ItemsController as itemsCtrl">
+			<div ng-repeat="singleItem in itemsCtrl.allItems">
+				{{singleItem.label}} {{singleItem.number}}
+			</div>
+			<form name="d3info" ng-controller="D3InfoController as d3infoCtrl" ng-submit="d3infoCtrl.addItem(itemsCtrl.allItems)" novalidate>
+				<div ng-show="item">
+					Preview: {{item.label}} {{item.number}}
+				</div>
+				<input type="textbox" ng-model="item.label">
+				<input type="textbox" ng-model="item.number">
+				<input type="submit" class="btn btn-primary">
+			</form>
+		</div>
 	</body>
 </html>

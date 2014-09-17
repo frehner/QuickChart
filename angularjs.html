@@ -9,11 +9,11 @@
 	</head>
 	<body>
 		<div ng-controller="ItemsController as itemsCtrl">
-			<div ng-repeat="singleItem in itemsCtrl.allItems">
+			<div ng-repeat="singleItem in allItems">
 				{{singleItem.label}} {{singleItem.number}}
 			</div>
-			<form name="d3info" ng-controller="D3InfoController as d3infoCtrl" ng-submit="d3infoCtrl.addItem(itemsCtrl.allItems)" novalidate>
-				<div ng-show="item">
+			<form name="d3info" ng-submit='addItem()' novalidate>
+				<div>
 					Preview: {{item.label}} {{item.number}}
 				</div>
 				<input type="textbox" ng-model="item.label">

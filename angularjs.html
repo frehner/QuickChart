@@ -6,19 +6,27 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-route.min.js"></script>
 		<script type="text/javascript" src="playing.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<style media="screen">
+			.ng-invalid.ng-dirty{
+				border-color:red;
+			}
+			.ng-valid.ng-dirty{
+				border-color:green;
+			}
+		</style>
 	</head>
 	<body>
 		<div ng-controller="ItemsController as itemsCtrl">
 			<div ng-repeat="singleItem in allItems">
 				{{singleItem.label}} {{singleItem.number}}
 			</div>
-			<form name="d3info" ng-submit='addItem()' novalidate>
-				<div>
+			<form name="addItemForm" ng-submit='addItemForm.$valid && addItem()' novalidate>
+				<div ng-show='addItemForm.$dirty'>
 					Preview: {{item.label}} {{item.number}}
 				</div>
-				<input type="textbox" ng-model="item.label">
-				<input type="textbox" ng-model="item.number">
-				<input type="submit" class="btn btn-primary">
+				<input type="textbox" ng-model="item.label" required>
+				<input type="number" ng-model="item.number" required>
+				<input type="submit" class="btn btn-primary" ng-disabled='addItemForm.$invalid'>
 			</form>
 		</div>
 	</body>

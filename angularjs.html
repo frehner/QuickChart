@@ -4,6 +4,7 @@
 		<title>Playing</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-route.min.js"></script>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 		<script type="text/javascript" src="playing.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<style media="screen">
@@ -28,6 +29,11 @@
 				<input type="number" ng-model="item.number" required>
 				<input type="submit" class="btn btn-primary" ng-disabled='addItemForm.$invalid'>
 			</form>
+		</div>
+		<div class="container-fluid">
+			<div class="row">
+				<drawing-div></drawing-div>
+			</div>
 		</div>
 	</body>
 </html>

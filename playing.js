@@ -10,7 +10,7 @@
 	var drawGraphFunc = function(newItems){
 
 		var scale = d3.scale.linear()
-							.domain([1, d3.max(newItems, function(d){
+							.domain([0, d3.max(newItems, function(d){
 								return d.number;
 							})])
 							.range([0,svgwidth]);
@@ -33,11 +33,16 @@
 						});
 
 		group.append("rect")
+				.transition()
+				.delay(function(d, i){
+					return (i+1)*500;
+				})
+				.duration(1000)
+				.attr("height", barheight)
+				.attr("fill", "steelblue")
 				.attr("width", function(d){
 					return scale(d.number);
-				})
-				.attr("height", barheight)
-				.attr("fill", "steelblue");
+				});
 
 		group.append("text")
 				.attr("x", function(d){

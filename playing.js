@@ -70,6 +70,11 @@
 
 			drawGraphFunc($scope.allItems);
 		};
+
+		$scope.removeItem = function(itemIndex) {
+			$scope.allItems.splice(itemIndex, 1);
+			drawGraphFunc($scope.allItems);
+		}
 	});
 
 	//this should draw it the first time with default data

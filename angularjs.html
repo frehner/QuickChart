@@ -31,6 +31,9 @@
 				<input type="submit" class="btn btn-primary" ng-disabled='addItemForm.$invalid'>
 			</form>
 		</div>
+		<ul class="nav nav-tabs">
+			<li ng-repeat="singleTab in allGraphTypes">{{singleTab.type}}</li>
+		</ul>
 		<div class="container-fluid">
 			<div class="row">
 				<drawing-div></drawing-div>

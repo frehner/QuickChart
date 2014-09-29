@@ -3,6 +3,8 @@
 
 	var items = [{'label':'Ham', 'number': 21}, {'label':'Cabbage', 'number': 88}];
 
+	var graphTypes = [{'type':'Horizontal Bar Chart', 'call':'hbarchart'}];
+
 	var svgwidth = 500;
 	var svgheight = 500;
 	var barheight = 45;
@@ -57,6 +59,7 @@
 
 	app.controller('ItemsController', function($scope){
 		$scope.allItems = items;
+		$scope.allGraphTypes = graphTypes;
 		$scope.item = {};
 
 		$scope.addItem = function(){
@@ -67,14 +70,13 @@
 
 			//make the form pristine so that the css doesn't apply anymore
 			$scope.addItemForm.$setPristine();
-
-			drawGraphFunc($scope.allItems);
 		};
 
 		$scope.removeItem = function(itemIndex) {
 			$scope.allItems.splice(itemIndex, 1);
-			drawGraphFunc($scope.allItems);
-		}
+		};
+
+		$scope.$watchCollection('allItems', drawGraphFunc);
 	});
 
 	//this should draw it the first time with default data

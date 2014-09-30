@@ -30,8 +30,10 @@
 				<input type="number" ng-model="item.number" required>
 				<input type="submit" class="btn btn-primary" ng-disabled='addItemForm.$invalid'>
 			</form>
-			<ul class="nav nav-tabs">
-				<li ng-repeat="singleTab in allGraphTypes">{{singleTab.type}}</li>
+			<ul class="nav nav-pills">
+				<li ng-repeat="singleTab in allGraphTypes" ng-class="{active: activeGraphType($index+1)}">
+					<a href ng-click="setGraphType($index+1)">{{singleTab.type}}</a>
+				</li>
 			</ul>
 		</div>
 		<div class="container-fluid">

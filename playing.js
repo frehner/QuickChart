@@ -3,7 +3,7 @@
 
 	var items = [{'label':'Ham', 'number': 21}, {'label':'Cabbage', 'number': 88}];
 
-	var graphTypes = [{'type':'Horizontal Bar Chart', 'call':'hbarchart'}];
+	var graphTypes = [{'type':'Horizontal Bar Chart'}];
 
 	var svgwidth = 500;
 	var svgheight = 500;
@@ -16,8 +16,8 @@
 								return d.number;
 							})])
 							.range([0,svgwidth]);
-				
-		var drawContainer = d3.select("drawing-div")
+
+		var drawContainer = d3.select("drawing-div");
 
 		drawContainer.selectAll("*")
 						.remove();
@@ -58,10 +58,13 @@
 	};
 
 	app.controller('ItemsController', function($scope){
+		//vars
 		$scope.allItems = items;
 		$scope.allGraphTypes = graphTypes;
 		$scope.item = {};
+		$scope.graphType = 1;
 
+		//functions
 		$scope.addItem = function(){
 			$scope.allItems.push($scope.item);
 
@@ -76,13 +79,25 @@
 			$scope.allItems.splice(itemIndex, 1);
 		};
 
+		$scope.setGraphType = function(newGraphTypeNumber) {
+			$scope.graphType = newGraphTypeNumber;
+		};
+
+		$scope.activeGraphType = function(checkGraphType) {
+			return $scope.graphType == checkGraphType;
+		};
+
+		//watchers on vars
 		$scope.$watchCollection('allItems', drawGraphFunc);
+		$scope.$watch('graphType', function(newGraphType) {
+			drawGraphFunc($scope.allItems);
+		});
 	});
 
 	//this should draw it the first time with default data
 	app.directive('drawingDiv', function(){
 		return {
-			restrict:'E', 
+			restrict:'E',
 			link: drawGraphFunc(items)
 		};
 	});

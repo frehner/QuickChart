@@ -17,15 +17,27 @@
 		</style>
 	</head>
 	<body>
-		<div ng-controller="ItemsController as itemsCtrl">
-			<div ng-repeat="singleItem in allItems">
-				{{singleItem.label}} {{singleItem.number}}
-				<button ng-click='removeItem($index)' class="btn btn-danger">Remove "{{singleItem.label}}"</button>
+		<div ng-controller="ItemsController as itemsCtrl" class="container-fluid">
+			<div ng-repeat="singleItem in allItems" class="row">
+				<div class="col-sm-4">
+					{{singleItem.label}}
+				</div>
+				<div class="col-sm-4">
+					{{singleItem.number}}
+				</div>
+				<div class="col-sm-4">
+					<button ng-click='removeItem($index)' class="btn btn-danger">Remove "{{singleItem.label}}"</button>
+				</div>
+			</div>
+			<div ng-show='addItemForm.$dirty' class="row">
+				<div class="col-sm-4">
+					{{item.label}}
+				</div>
+				<div class="col-sm-4">
+					{{item.number}}
+				</div>
 			</div>
 			<form name="addItemForm" ng-submit='addItemForm.$valid && addItem()' novalidate>
-				<div ng-show='addItemForm.$dirty'>
-					Preview: {{item.label}} {{item.number}}
-				</div>
 				<input type="textbox" ng-model="item.label" required>
 				<input type="number" ng-model="item.number" required>
 				<input type="submit" class="btn btn-primary" ng-disabled='addItemForm.$invalid'>

@@ -8,6 +8,7 @@
 	var svgwidth = 500;
 	var svgheight = 500;
 	var barheight = 45;
+	var animationDuration = 500;
 
 	var topGraphType = 1;
 
@@ -22,7 +23,7 @@
 								.attr("width", svgwidth)
 								.attr("height", svgheight);
 
-		
+
 		switch (topGraphType) {
 			case 2:
 				//vertical bar chart
@@ -42,11 +43,13 @@
 								});
 
 				group.append("rect")
+						.attr('width', barheight)
+						.attr('height', 0)
 						.transition()
 						.delay(function(d,i){
 							return (i+1)*500;
 						})
-						.duration(1000)
+						.duration(animationDuration)
 						.attr("y", function(d){
 							return scale(d.number);
 						})
@@ -58,8 +61,9 @@
 
 				group.append("text")
 						.attr("x", barheight/2)
-						.attr("y", 5)
+						.attr("y", svgheight - 5)
 						.attr("dx", ".35em")
+						.attr("transform", "rotate(270 "+(barheight/2)+", "+(svgheight-5)+")")  
 						.text(function(d){
 							return d.label;
 						});
@@ -83,11 +87,13 @@
 						});
 
 				group.append("rect")
+						.attr('height', barheight)
+						.attr('width', 0)
 						.transition()
 						.delay(function(d, i){
 							return (i+1)*500;
 						})
-						.duration(1000)
+						.duration(animationDuration)
 						.attr("height", barheight)
 						.attr("fill", "steelblue")
 						.attr("width", function(d){
@@ -105,7 +111,7 @@
 						});
 				break;
 		}
-		
+
 	};
 
 	app.controller('ItemsController', function($scope){

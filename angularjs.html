@@ -18,7 +18,15 @@
 	</head>
 	<body>
 		<div ng-controller="ItemsController as itemsCtrl" class="container-fluid">
-			<div ng-repeat="singleItem in allItems" class="row">
+			<div class="row">
+				<div class="col-sm-4" ng-click="sortBy='label'; reverse = !reverse;">
+					<button class="btn">Order by label</button>
+				</div>
+				<div class="col-sm-4" ng-click="sortBy='number'; reverse = !reverse;">
+					<button class="btn">Order by number</button>
+				</div>
+			</div>
+			<div ng-repeat="singleItem in allItems | orderBy:sortBy:reverse" class="row">
 				<div class="col-sm-4">
 					{{singleItem.label}}
 				</div>

@@ -7,8 +7,11 @@
 
 	var svgwidth = 500;
 	var svgheight = 500;
-	var barheight = 45;
-	var animationDuration = 500;
+	var xPadding = 20;
+	var yPadding = 20;
+
+	var barwideness = 45;
+	var animationDuration = 400;
 
 	var topGraphType = 1;
 
@@ -19,7 +22,7 @@
 		drawContainer.selectAll("*")
 						.remove();
 
-		var svg = drawContainer.append("svg")
+		var svgContainer = drawContainer.append("svg")
 								.attr("width", svgwidth)
 								.attr("height", svgheight);
 
@@ -28,22 +31,22 @@
 			case 2:
 				//vertical bar chart
 
-				var scale = d3.scale.linear()
+				var verticalScale = d3.scale.linear()
 							.domain([0, d3.max(newItems, function(d){
 								return d.number;
 							})])
-							.range([svgwidth,0]);
+							.range([svgheight-yPadding,0]);
 
-				var group = svg.selectAll("g")
+				var group = svgContainer.selectAll("g")
 								.data(newItems)
 								.enter()
 								.append("g")
 								.attr("transform", function(d,i) {
-									return "translate("+i*(barheight+5)+", 0)";
+									return "translate("+(i*(barwideness+5)+xPadding)+", 0)";
 								});
 
 				group.append("rect")
-						.attr('width', barheight)
+						.attr('width', barwideness)
 						.attr('height', 0)
 						.transition()
 						.delay(function(d,i){
@@ -51,64 +54,72 @@
 						})
 						.duration(animationDuration)
 						.attr("y", function(d){
-							return scale(d.number);
+							return verticalScale(d.number);
 						})
 						.attr("height", function(d){
-							return svgheight - scale(d.number);
+							return svgheight - yPadding - verticalScale(d.number);
 						})
-						.attr("width", barheight)
 						.attr("fill", "steelblue");
 
 				group.append("text")
-						.attr("x", barheight/2)
-						.attr("y", svgheight - 5)
+						.attr("x", barwideness/2)
+						.attr("y", svgheight-yPadding - 5)
 						.attr("dx", ".35em")
-						.attr("transform", "rotate(270 "+(barheight/2)+", "+(svgheight-5)+")")  
+						.attr("transform", "rotate(270 "+(barwideness/2)+", "+(svgheight-yPadding-5)+")")
 						.text(function(d){
 							return d.label;
 						});
+
+						var yAxis = d3.svg.axis().scale(verticalScale).orient("right");
+						svgContainer.append("g")
+												.attr("transform", "translate("+(svgwidth-yPadding-5) +",0)")
+												.call(yAxis);
 				break;
 
 			default:
 				//horizontal bar chart
 
-				var scale = d3.scale.linear()
+				var horizontalScale = d3.scale.linear()
 							.domain([0, d3.max(newItems, function(d){
 								return d.number;
 							})])
-							.range([0,svgwidth]);
+							.range([xPadding,svgwidth-xPadding]);
 
-				var group = svg.selectAll("g")
+				var group = svgContainer.selectAll("g")
 						.data(newItems)
 						.enter()
 						.append("g")
 						.attr("transform", function(d,i){
-							return "translate(0, "+i*(barheight+5)+")";
+							return "translate("+xPadding+", "+(i*(barwideness+5)+yPadding)+")";
 						});
 
 				group.append("rect")
-						.attr('height', barheight)
+						.attr('height', barwideness)
 						.attr('width', 0)
 						.transition()
 						.delay(function(d, i){
 							return (i+1)*500;
 						})
 						.duration(animationDuration)
-						.attr("height", barheight)
 						.attr("fill", "steelblue")
 						.attr("width", function(d){
-							return scale(d.number);
+							return horizontalScale(d.number) - xPadding;
 						});
 
 				group.append("text")
 						.attr("x", function(d){
 							return 5;
 						})
-						.attr("y", barheight/2)
+						.attr("y", barwideness/2)
 						.attr("dy", ".35em")
 						.text(function(d){
 							return d.label;
 						});
+
+				var xAxis = d3.svg.axis().scale(horizontalScale);
+				svgContainer.append("g")
+										.attr("transform", "translate(0,"+ (svgheight-xPadding) +")")
+										.call(xAxis);
 				break;
 		}
 

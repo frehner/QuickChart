@@ -35,7 +35,7 @@
 							.domain([0, d3.max(newItems, function(d){
 								return d.number;
 							})])
-							.range([svgheight-yPadding,0]);
+							.range([svgheight-yPadding,yPadding]);
 
 				var group = svgContainer.selectAll("g")
 								.data(newItems)
@@ -143,8 +143,13 @@
 			$scope.addItemForm.$setPristine();
 		};
 
-		$scope.removeItem = function(itemIndex) {
-			$scope.allItems.splice(itemIndex, 1);
+		$scope.removeItem = function(singleItem) {
+			for (var i = $scope.allItems.length - 1; i >= 0; i--) {
+				if ($scope.allItems[i] === singleItem) {
+					$scope.allItems.splice(i, 1);
+					break;
+				}
+			};
 		};
 
 		$scope.setGraphType = function(newGraphTypeNumber) {

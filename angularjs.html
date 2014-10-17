@@ -34,7 +34,7 @@
 					{{singleItem.number}}
 				</div>
 				<div class="col-sm-4">
-					<button ng-click='removeItem($index)' class="btn btn-danger">Remove "{{singleItem.label}}"</button>
+					<button ng-click='removeItem(singleItem)' class="btn btn-danger">Remove "{{singleItem.label}}"</button>
 				</div>
 			</div>
 			<div ng-show='addItemForm.$dirty' class="row">

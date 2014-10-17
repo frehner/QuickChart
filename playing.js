@@ -3,7 +3,7 @@
 
 	var items = [{'label':'Ham', 'number': 21}, {'label':'Cabbage', 'number': 88}];
 
-	var graphTypes = [{'type':'Horizontal Bar Chart'}, {'type':'Vertical Bar Chart'}];
+	var graphTypes = [{'type':'Horizontal Bar Chart'}, {'type':'Vertical Bar Chart'}, {'type':'Pie Chart'}];
 
 	var svgwidth = 500;
 	var svgheight = 500;
@@ -19,8 +19,7 @@
 
 		var drawContainer = d3.select("drawing-div");
 
-		drawContainer.selectAll("*")
-						.remove();
+		drawContainer.selectAll("*").remove();
 
 		var svgContainer = drawContainer.append("svg")
 								.attr("width", svgwidth)
@@ -75,6 +74,26 @@
 												.attr("transform", "translate("+(svgwidth-yPadding-5) +",0)")
 												.call(yAxis);
 				break;
+
+			case 3:
+			//http://chimera.labs.oreilly.com/books/1230000000345/ch11.html#_pie_layout
+				var pie = d3.layout.pie();
+				var color = d3.scale.category20();
+				var outerRadius = (svgheight - yPadding - xPadding) /2;
+				var arc = d3.svg.arc().innerRadius(0).outerRadius(outerRadius);
+
+				var arcs = svgContainer.selectAll("g.arc")
+										.data(pie(newItems))
+										.enter()
+										.append("g")
+										.attr("class", "arc")
+										.attr("transform", "translate(" +  outerRadius + ", " + outerRadius + ")");
+
+				arcs.append("path")
+					.attr("fill", function(d,i) {
+						return color(i);
+					})
+					.attr("d", arc);
 
 			default:
 				//horizontal bar chart

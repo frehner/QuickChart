@@ -77,10 +77,11 @@
 
 			case 3:
 			//http://chimera.labs.oreilly.com/books/1230000000345/ch11.html#_pie_layout
-				var pie = d3.layout.pie();
 				var color = d3.scale.category20();
-				var outerRadius = (svgheight - yPadding - xPadding) /2;
-				var arc = d3.svg.arc().innerRadius(0).outerRadius(outerRadius);
+				var outerRadius = (svgheight - yPadding) /2;
+				var innerRadius = 0;
+				var arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+				var pie = d3.layout.pie().value(function(d){return d.number;});
 
 				var arcs = svgContainer.selectAll("g.arc")
 										.data(pie(newItems))

@@ -49,6 +49,9 @@
 				group.append("rect")
 						.attr('width', barwideness)
 						.attr('height', 0)
+						.attr('y', function(d){
+							return svgheight - yPadding;
+						})
 						.transition()
 						.delay(function(d,i){
 							return (i+1)*animationDelay;
@@ -98,9 +101,6 @@
 										.attr("transform", "translate(" +  outerRadius + ", " + outerRadius + ")");
 
 				arcs.append("path")
-					.attr("fill", function(d,i) {
-						return color(i);
-					})
 					.transition()
 					.delay(function(d,i){
 						return (i+1)*animationDelay;
@@ -112,6 +112,9 @@
 							d.endAngle = i(t);
 							return arc(d);
 						};
+					})
+					.attr("fill", function(d,i) {
+						return color(i);
 					});
 
 				arcs.append("text")
@@ -148,9 +151,6 @@
 				group.append("rect")
 						.attr('height', barwideness)
 						.attr('width', 0)
-						.attr("fill", function(d,i){
-							return color(i);
-						})
 						.transition()
 						.delay(function(d, i){
 							return (i+1)*animationDelay;
@@ -158,6 +158,9 @@
 						.duration(animationDuration)
 						.attr("width", function(d){
 							return horizontalScale(d.number) - xPadding;
+						})
+						.attr("fill", function(d,i){
+							return color(i);
 						});
 
 				group.append("text")

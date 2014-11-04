@@ -12,8 +12,11 @@
 
 	var barwideness = 45;
 	var animationDuration = 400;
+	var animationDelay = 500;
 
 	var topGraphType = 1;
+
+	var color = d3.scale.category10();
 
 	var drawGraphFunc = function(newItems){
 
@@ -29,7 +32,6 @@
 		switch (topGraphType) {
 			case 2:
 				//vertical bar chart
-
 				var verticalScale = d3.scale.linear()
 							.domain([0, d3.max(newItems, function(d){
 								return d.number;
@@ -49,7 +51,7 @@
 						.attr('height', 0)
 						.transition()
 						.delay(function(d,i){
-							return (i+1)*500;
+							return (i+1)*animationDelay;
 						})
 						.duration(animationDuration)
 						.attr("y", function(d){
@@ -58,7 +60,9 @@
 						.attr("height", function(d){
 							return svgheight - yPadding - verticalScale(d.number);
 						})
-						.attr("fill", "steelblue");
+						.attr("fill", function(d,i){
+							return color(i);
+						});
 
 				group.append("text")
 						.attr("x", barwideness/2)
@@ -76,8 +80,7 @@
 				break;
 
 			case 3:
-			//http://chimera.labs.oreilly.com/books/1230000000345/ch11.html#_pie_layout
-				var color = d3.scale.category20();
+				//pie chart
 				var outerRadius = (svgheight - yPadding) /2;
 				var innerRadius = 0;
 				var arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
@@ -96,9 +99,19 @@
 					})
 					.attr("d", arc);
 
+				arcs.append("text")
+					.attr('transform', function(d){
+						return "translate("+ arc.centroid(d) + ")";
+					})
+					.attr('text-anchor', 'middle')
+					.text(function(d){
+						console.log(d);
+						return d.data.label;
+					});
+					break;
+
 			default:
 				//horizontal bar chart
-
 				var horizontalScale = d3.scale.linear()
 							.domain([0, d3.max(newItems, function(d){
 								return d.number;
@@ -118,10 +131,12 @@
 						.attr('width', 0)
 						.transition()
 						.delay(function(d, i){
-							return (i+1)*500;
+							return (i+1)*animationDelay;
 						})
 						.duration(animationDuration)
-						.attr("fill", "steelblue")
+						.attr("fill", function(d,i){
+							return color(i);
+						})
 						.attr("width", function(d){
 							return horizontalScale(d.number) - xPadding;
 						});
@@ -169,7 +184,7 @@
 					$scope.allItems.splice(i, 1);
 					break;
 				}
-			};
+			}
 		};
 
 		$scope.setGraphType = function(newGraphTypeNumber) {

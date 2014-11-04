@@ -69,6 +69,10 @@
 						.attr("y", svgheight-yPadding - 5)
 						.attr("dx", ".35em")
 						.attr("transform", "rotate(270 "+(barwideness/2)+", "+(svgheight-yPadding-5)+")")
+						.transition()
+						.delay(function(d,i){
+							return (i+1)*animationDelay;
+						})
 						.text(function(d){
 							return d.label;
 						});
@@ -97,17 +101,32 @@
 					.attr("fill", function(d,i) {
 						return color(i);
 					})
-					.attr("d", arc);
+					.transition()
+					.delay(function(d,i){
+						return (i+1)*animationDelay;
+					})
+					.duration(animationDuration)
+					.attrTween("d", function(d){
+						var i = d3.interpolate(d.startAngle+0.1, d.endAngle);
+						return function(t){
+							d.endAngle = i(t);
+							return arc(d);
+						};
+					});
 
 				arcs.append("text")
 					.attr('transform', function(d){
 						return "translate("+ arc.centroid(d) + ")";
 					})
 					.attr('text-anchor', 'middle')
+					.transition()
+					.delay(function(d,i){
+						return (i+1)*animationDelay;
+					})
 					.text(function(d){
-						console.log(d);
 						return d.data.label;
 					});
+
 					break;
 
 			default:
@@ -129,14 +148,14 @@
 				group.append("rect")
 						.attr('height', barwideness)
 						.attr('width', 0)
+						.attr("fill", function(d,i){
+							return color(i);
+						})
 						.transition()
 						.delay(function(d, i){
 							return (i+1)*animationDelay;
 						})
 						.duration(animationDuration)
-						.attr("fill", function(d,i){
-							return color(i);
-						})
 						.attr("width", function(d){
 							return horizontalScale(d.number) - xPadding;
 						});
@@ -147,6 +166,10 @@
 						})
 						.attr("y", barwideness/2)
 						.attr("dy", ".35em")
+						.transition()
+						.delay(function(d, i){
+							return (i+1)*animationDelay;
+						})
 						.text(function(d){
 							return d.label;
 						});

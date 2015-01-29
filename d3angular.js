@@ -1,5 +1,5 @@
 (function() {
-	var app = angular.module('playingApp', []);
+	var app = angular.module('quickChart', []);
 
 	var items = [{'label':'Ham', 'number': 21}, {'label':'Cabbage', 'number': 88}];
 
